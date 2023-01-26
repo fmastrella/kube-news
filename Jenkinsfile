@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage ('Build docker image') {
+        stage ('Build Docker Image') {
             steps {
                 script {
                     dockerapp = docker.build("fmastrella/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
@@ -16,6 +16,17 @@ pipeline {
                         dockerapp.push('latest')
                         dockerapp.push("${env.BUILD_ID}")
                     }
+                }
+            }
+        }
+
+        stage ('Deploy Kubernetes') {
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh 'kubectl apply -f ./k8s/deployment.yaml'
+                }
+                script {
+
                 }
             }
         }
