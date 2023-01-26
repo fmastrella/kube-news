@@ -45,7 +45,7 @@ kind: Deployment
 metadata: 
   name: web
 spec:
-  replicas: 12
+  replicas: 6
   selector:
     matchLabels:
       app: web
@@ -81,5 +81,5 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
-      nodePort: 30000
-  type: NodePort
+      # nodePort: 30000
+  type: LoadBalancer
